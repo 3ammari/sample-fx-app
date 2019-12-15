@@ -1,4 +1,4 @@
-module github.com/yagehu/sample-fx-app
+module github.com/3ammari/sample-fx-app
 
 go 1.12
 
