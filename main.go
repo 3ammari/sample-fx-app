@@ -11,7 +11,8 @@ import (
 )
 
 func main() {
-	fx.New(opts()).Run()
+	app := fx.New(opts())
+	app.Run()
 }
 
 func opts() fx.Option {

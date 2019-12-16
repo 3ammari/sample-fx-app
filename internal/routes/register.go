@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/3ammari/sample-fx-app/internal/env"
+
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 
@@ -19,6 +21,7 @@ type Params struct {
 	Logger    *zap.Logger
 	Lifecycle fx.Lifecycle
 	Handler   hello.Handler
+	Config    env.Config
 }
 
 // Register registers the routes for the server and starts the server on app
@@ -27,7 +30,7 @@ func Register(p Params) {
 	router := http.NewServeMux()
 	router.HandleFunc("/", p.Handler.Hello)
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + p.Config.Port,
 		Handler: router,
 	}
 
@@ -41,18 +44,6 @@ func Register(p Params) {
 			OnStop: func(ctx context.Context) error {
 				p.Logger.Info("Shutting down server.")
 				return server.Shutdown(ctx)
-			},
-		},
-	)
-	p.Lifecycle.Append(
-		fx.Hook{
-			OnStart: func(ctx context.Context) error {
-				p.Logger.Info("Ping DB")
-				return p.DB.PingContext(ctx)
-			},
-			OnStop: func(ctx context.Context) error {
-				p.Logger.Info("Closing DB connection")
-				return p.DB.Close()
 			},
 		},
 	)

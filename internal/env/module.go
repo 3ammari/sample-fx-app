@@ -9,6 +9,7 @@ import (
 //Module Environment Store
 var Module = fx.Provide(New)
 
+//Stage stage enum
 type Stage string
 
 const (
@@ -21,12 +22,14 @@ const (
 type Config struct {
 	DatabaseURL string
 	Stage       Stage
+	Port        string
 }
 
 //New instantiate an new Default
 func New() Config {
 	config := Config{
 		DatabaseURL: os.Getenv("DB_URL"),
+		Port:        os.Getenv("PORT"),
 	}
 
 	switch os.Getenv("Stage") {

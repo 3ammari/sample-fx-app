@@ -26,6 +26,6 @@ func New(p Params) (logger *zap.Logger, err error) {
 	if err != nil {
 		return nil, err
 	}
-	logger.Info("Logger in Stage " + string(p.Config.Stage) + " Mode")
+	logger.Sugar().Infof(" Stage is %s ", p.Config.Stage)
 	return logger, nil
 }
